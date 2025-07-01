@@ -1,14 +1,29 @@
 const express = require("express");
 const router = express.Router();
 const posts = require("../data/postsData");
+const { error } = require("console");
 
 router.get("/", (req, res) => {
-    res.json(posts);
+    let filteredPosts = posts;
+    if (req.query.tag) {
+        filteredPosts = posts.filter((post) =>
+            post.tags.includes(req.query.tag)
+        );
+    }
+    res.json(filteredPosts);
 });
 
 router.get("/:id", (req, res) => {
-    const post = posts[req.params.id - 1];
-    res.json({ message: "Ecco i dettagli del post", post });
+    const id = parseInt(req.params.id);
+    const post = posts.find((post) => post.id === id);
+    if (post) {
+        res.json({ message: "Ecco i dettagli del post", post });
+    } else {
+        res.status(404).json({
+            error: "Not Found",
+            message: "Post non trovato",
+        });
+    }
 });
 
 router.post("/", (req, res) => {
@@ -24,7 +39,16 @@ router.patch("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
-    res.send("Elimina il post " + req.params.id);
+    id = parseInt(req.params.id);
+    const post = posts.find((post) => post.id === id);
+    if (!post) {
+        return res.status(404).json({
+            error: "Not Found",
+            message: "Post non trovato",
+        });
+    }
+    posts.splice(posts.indexOf(post), 1);
+    res.sendStatus(204);
 });
 
 module.exports = router;
