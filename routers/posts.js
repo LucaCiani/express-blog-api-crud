@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const posts = require("../data/postsData");
-const { error } = require("console");
 
 router.get("/", (req, res) => {
     let filteredPosts = posts;
