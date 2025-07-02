@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const port = 3030;
 
+app.use(express.json());
+
 const postsRoute = require("./routers/posts");
 
 app.use(express.static("public"));
