@@ -1,5 +1,8 @@
 const posts = require("../data/postsData");
 
+// Funzioni del controller per gestire le operazioni CRUD sui post
+
+// index: Elenco dei post
 function index(req, res) {
     let filteredPosts = posts;
     if (req.query.tag) {
@@ -10,6 +13,7 @@ function index(req, res) {
     res.json(filteredPosts);
 }
 
+// show: Dettagli di un post specifico
 function show(req, res) {
     const id = parseInt(req.params.id);
     const post = posts.find((post) => post.id === id);
@@ -23,6 +27,7 @@ function show(req, res) {
     }
 }
 
+// store: Creazione di un nuovo post
 function store(req, res) {
     const newId = posts[posts.length - 1].id + 1;
     const newPost = {
@@ -38,6 +43,7 @@ function store(req, res) {
     res.status(201).json(newPost);
 }
 
+// update: Aggiornamento di un post specifico
 function update(req, res) {
     const id = parseInt(req.params.id);
     const post = posts.find((post) => post.id === id);
@@ -55,6 +61,7 @@ function update(req, res) {
     res.json(post);
 }
 
+// modify: Modifica parziale di un post specifico
 function modify(req, res) {
     const id = parseInt(req.params.id);
     const post = posts.find((post) => post.id === id);
@@ -72,6 +79,7 @@ function modify(req, res) {
     res.json(post);
 }
 
+// destroy: Cancellazione di un post specifico
 function destroy(req, res) {
     const id = parseInt(req.params.id);
     const post = posts.find((post) => post.id === id);
@@ -85,6 +93,8 @@ function destroy(req, res) {
     res.sendStatus(204);
 }
 
+// Esportazione delle funzioni del controller
+// Queste funzioni saranno utilizzate nelle rotte del router dei post
 module.exports = {
     index,
     show,
